@@ -1,6 +1,6 @@
 import streamlit as st
 import pandas as pd
-from io import StringIO
+from io import BytesIO
 
 # Configuração da página
 st.set_page_config(page_title="Tratamento de Dados", layout="wide")
@@ -60,16 +60,15 @@ if arquivo is not None:
             colunas_exportar = ['cp_competencia', 'cp_nome_epr', 'cp_salario'] + colunas_selecionadas
             df_exportar = df_pivot[colunas_exportar]
 
-            # Converte DataFrame para CSV em memória
-            csv_buffer = StringIO()
-            df_exportar.to_excel(csv_buffer)
-            csv_data = csv_buffer.getvalue()
+            excel_buffer = BytesIO()
+            df_exportar.to_excel(excel_buffer) 
+            excel_buffer.seek(0)  # move o cursor para o início do buffer
 
             # Botão de download
             st.download_button(
                 label="Download dos dados tratados",
-                data=csv_data,
-                file_name="RH_SIMPLIFICADO.xls",
+                data=excel_buffer,
+                file_name="RH_SIMPLIFICADO.xlsx",  # Use .xlsx (mais moderno e suportado)
                 mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
                 icon="⬇️"
             )
