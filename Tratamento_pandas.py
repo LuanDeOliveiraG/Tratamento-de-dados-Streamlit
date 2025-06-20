@@ -27,7 +27,7 @@ try:
         pd.set_option('display.max_columns', None)
     
         # Filtra apenas as colunas desejadas
-        colunas = ['cp_competencia', 'cp_nome_epr', 'cp_salario', 'cp_nome_eve_p', 'cp_eve_val_p']
+        colunas = ['cp_competencia', 'cp_nome_epr', 'cp_salario', 'cp_nome_car', 'cp_nome_eve_p', 'cp_eve_val_p']
         df_tratado = df[colunas].copy()
     
         # Remove linhas com valores nulos em 'cp_nome_eve_p'
@@ -35,7 +35,7 @@ try:
     
         # Cria tabela pivô
         df_pivot = df_tratado.pivot_table(
-            index=['cp_competencia', 'cp_nome_epr', 'cp_salario'],
+            index=['cp_competencia', 'cp_nome_epr', 'cp_salario','cp_nome_car'],
             columns='cp_nome_eve_p',
             values='cp_eve_val_p',
             aggfunc='first'
@@ -58,7 +58,7 @@ try:
             # Prepara dados para exportar
             if colunas_selecionadas:
                 # Garante que colunas existem na tabela pivô
-                colunas_exportar = ['cp_competencia', 'cp_nome_epr', 'cp_salario'] + colunas_selecionadas
+                colunas_exportar = ['cp_competencia', 'cp_nome_epr', 'cp_salario','cp_nome_car'] + colunas_selecionadas
                 df_exportar = df_pivot[colunas_exportar]
     
                 excel_buffer = BytesIO()
